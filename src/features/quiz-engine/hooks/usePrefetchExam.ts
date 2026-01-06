@@ -1,20 +1,35 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { getStandardExam } from "../data";
+import { ExamMode } from "../types/quiz.schema";
 
-export function usePrefetchExam() {
-  const router = useRouter();
+export function usePrefetchExam(mode: ExamMode) {
+  // Generates a unique seed for the session
+  const [sessionSeed] = useState(() => Math.random().toString(36).substring(7));
 
-  const handleHover = async () => {
-    console.log(
-      "[Rank: Principal] User intent detected. Warming up Exam Cache..."
-    );
+  // Effect to prefetch exam data on mount
+  useEffect(() => {
+    // Skip prefetching for endless mode
+    if (mode === "endless") return;
 
-    router.prefetch("/exam/training");
+    // Async function to prefetch exam
+    const warmup = async () => {
+      console.log(
+        `[Rank: Principal] Warming up fresh ${mode} session [Seed: ${sessionSeed}]`
+      );
+      // Prefetch exam data
+      try {
+        await getStandardExam(sessionSeed);
+        // Catches and logs any errors
+      } catch (err) {
+        console.error("Prefetch failed", err);
+      }
+    };
 
-    await getStandardExam().catch(() => {});
-  };
+    // Initiates prefetching
+    warmup();
+  }, [mode, sessionSeed]); // Dependencies: mode and sessionSeed
 
-  return { handleHover };
+  return { sessionSeed }; // Returns the generated session seed
 }
