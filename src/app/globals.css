@@ -30,3 +30,30 @@ body::before {
   mask-image: radial-gradient(circle at center, black, transparent 90%);
   opacity: 0.12;
 }
+
+/* Scrollbar Styling */
+html {
+  scrollbar-gutter: stable;
+  scroll-behavior: smooth !important;
+  scrollbar-color: var(--color-mesh) transparent;
+  scrollbar-width: thin;
+}
+
+/* Webkit specific styling for deeper control (Chrome/Edge/Safari) */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-mesh);
+  border-radius: 10px;
+  border: 2px solid var(--color-obsidian);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #334155;
+}

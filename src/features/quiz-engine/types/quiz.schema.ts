@@ -41,3 +41,25 @@ export interface ExamState {
   isFinished: boolean; // Indicates if exam session is finished
   timeLeft: number | null; // Remaining time for timed exams (in seconds)
 }
+
+// Props for QuestionCard component
+export interface QuestionCardProps {
+  question: Question; // The question to display
+  selectedAnswers: string[]; // Currently selected answer IDs
+  onSelect: (answerId: string) => void; // Callback when an answer is selected
+  showExplanation?: boolean; // Whether to show explanation section
+}
+
+// Defines a region in the Hot Area map
+export interface HotAreaRegion {
+  id: string; // Unique identifier for the region
+  path: string; // SVG path data for the region
+  label?: string; // Optional label for the region
+}
+
+// Props for HotAreaMap component
+export interface HotAreaMapProps {
+  metadata?: string; // JSON string defining hot area regions
+  selectedIds: string[]; // Currently selected region IDs
+  onSelect: (id: string) => void; // Callback when a region is selected
+}
