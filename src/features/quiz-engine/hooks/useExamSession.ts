@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback, useMemo } from "react";
-import { quizService } from "../data";
+import { getStandardExam, getEndlessQuestions } from "../data";
 import { ExamMode, ExamState, QuestionType } from "../types/quiz.schema";
 
 // Custom hook to manage exam session state and logic
@@ -39,8 +39,8 @@ export function useExamSession(mode: ExamMode) {
         // Fetches exam based on mode
         const response =
           mode === "endless"
-            ? await quizService.getEndlessQuestions(10)
-            : await quizService.getStandardExam();
+            ? await getEndlessQuestions(10)
+            : await getStandardExam();
 
         // Updates state if component is still mounted
         if (isMounted) {
