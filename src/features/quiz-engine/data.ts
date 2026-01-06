@@ -1,11 +1,17 @@
 import { apiRequest } from "@/shared/lib";
 import { ExamResponse } from "./types/quiz.schema";
 
-// Service object for quiz-related API calls
+// Service object to interact with quiz-related API endpoints
 export const quizService = {
-  getStandardExam: () => apiRequest<ExamResponse>("/exams/standard"),
+  // Fetches standard exam with caching
+  getStandardExam: async () =>
+    apiRequest<ExamResponse>("/exams/standard", {
+      next: { revalidate: 3600 }, // Cache the weighted exam for 1 hour
+    }),
 
-  // Fetches endless random questions with optional limit
-  getEndlessQuestions: (limit: number = 10) =>
-    apiRequest<ExamResponse>(`/exams/endless?pageSize=${limit}`),
+  // Fetches endless questions without caching
+  getEndlessQuestions: (pageSize: number = 10) =>
+    apiRequest<ExamResponse>(`/exams/endless?pageSize=${pageSize}`, {
+      cache: "no-store", // Endless mode must always be fresh
+    }),
 };
